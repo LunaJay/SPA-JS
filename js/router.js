@@ -7,6 +7,7 @@ let pageUrls = {
 // Funkcja uruchamiana podczas startu aplikacji
 function OnStartUp() {
   popStateHandler();
+  setupThemeToggle(); // Inicjalizacja przycisku "Toggle Theme"
 }
 OnStartUp();
 
@@ -39,6 +40,7 @@ function RenderAboutPage() {
   document.querySelector("main").innerHTML = `
         <h1 class="title">About Me</h1>
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>`;
+  setupThemeToggle(); // Obsługa "Toggle Theme"
 }
 
 // Funkcja renderująca stronę "Contact" z formularzem
@@ -67,8 +69,8 @@ function RenderContactPage() {
 
             <button type="submit">Send</button>
         </form>`;
-
   setupCaptcha();
+  setupThemeToggle(); // Obsługa "Toggle Theme"
 
   document
     .getElementById("contact-form")
@@ -128,6 +130,7 @@ function validateForm() {
 
   return isValid;
 }
+
 function setupCaptcha() {
   const captchaCode = Math.floor(1000 + Math.random() * 9000).toString(); // Losowy kod 4-cyfrowy
   document.getElementById("captcha-code").textContent = captchaCode;
@@ -142,10 +145,9 @@ function RenderGalleryPage() {
             <span id="close-modal">&times;</span>
             <img id="modal-image" class="modal-content" src="" alt="Image preview">
         </div>`;
-
   LoadGalleryImages();
+  setupThemeToggle(); // Obsługa "Toggle Theme"
 
-  // Obsługa zamykania modalu
   const modal = document.getElementById("modal");
   document
     .getElementById("close-modal")
@@ -213,6 +215,16 @@ function popStateHandler() {
   if (loc === pageUrls.contact) RenderContactPage();
   else if (loc === pageUrls.about) RenderAboutPage();
   else if (loc === pageUrls.gallery) RenderGalleryPage();
+}
+
+// Funkcja obsługująca przycisk "Toggle Theme"
+function setupThemeToggle() {
+  const toggleButton = document.getElementById("theme-toggle");
+  if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+    });
+  }
 }
 
 // Obsługa zdarzenia "onpopstate"
