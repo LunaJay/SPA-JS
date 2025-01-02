@@ -39,7 +39,7 @@ document.querySelector("#gallery-link").addEventListener("click", () => {
 function RenderAboutPage() {
   document.querySelector("main").innerHTML = `
         <h1 class="title">About Me</h1>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry...</p>`;
+        <p> You can learn more about me on my LinkedIn. Do you think you can find me?</p>`;
   setupThemeToggle(); // Obsługa "Toggle Theme"
 }
 
