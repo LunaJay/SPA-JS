@@ -48,27 +48,89 @@ function RenderContactPage() {
         <form id="contact-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
-            
+            <span class="error-message" id="name-error"></span>
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-            
+            <span class="error-message" id="email-error"></span>
+
             <label for="message">Message:</label>
             <textarea id="message" name="message" required></textarea>
-            
+            <span class="error-message" id="message-error"></span>
+
+            <div class="captcha-container">
+                <label for="captcha">Enter the number shown:</label>
+                <div id="captcha-code"></div>
+                <input type="text" id="captcha" name="captcha" required>
+                <span class="error-message" id="captcha-error"></span>
+            </div>
+
             <button type="submit">Send</button>
         </form>`;
+
+  setupCaptcha();
 
   document
     .getElementById("contact-form")
     .addEventListener("submit", (event) => {
       event.preventDefault();
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
-      alert(
-        `Form submitted!\nName: ${name}\nEmail: ${email}\nMessage: ${message}`
-      );
+      if (validateForm()) {
+        alert("Form submitted successfully!");
+      }
     });
+}
+
+function validateForm() {
+  let isValid = true;
+
+  // Walidacja pola "Name"
+  const name = document.getElementById("name").value.trim();
+  if (!name) {
+    document.getElementById("name-error").textContent = "Name is required.";
+    isValid = false;
+  } else {
+    document.getElementById("name-error").textContent = "";
+  }
+
+  // Walidacja pola "Email"
+  const email = document.getElementById("email").value.trim();
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailPattern.test(email)) {
+    document.getElementById("email-error").textContent =
+      "Valid email is required.";
+    isValid = false;
+  } else {
+    document.getElementById("email-error").textContent = "";
+  }
+
+  // Walidacja pola "Message"
+  const message = document.getElementById("message").value.trim();
+  if (!message) {
+    document.getElementById("message-error").textContent =
+      "Message is required.";
+    isValid = false;
+  } else {
+    document.getElementById("message-error").textContent = "";
+  }
+
+  // Walidacja CAPTCHA
+  const captcha = document.getElementById("captcha").value.trim();
+  const captchaCode = document
+    .getElementById("captcha-code")
+    .textContent.trim();
+  if (!captcha || captcha !== captchaCode) {
+    document.getElementById("captcha-error").textContent =
+      "Captcha is incorrect.";
+    isValid = false;
+  } else {
+    document.getElementById("captcha-error").textContent = "";
+  }
+
+  return isValid;
+}
+function setupCaptcha() {
+  const captchaCode = Math.floor(1000 + Math.random() * 9000).toString(); // Losowy kod 4-cyfrowy
+  document.getElementById("captcha-code").textContent = captchaCode;
 }
 
 // Funkcja renderująca stronę "Gallery"
